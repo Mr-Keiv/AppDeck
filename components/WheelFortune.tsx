@@ -15,12 +15,12 @@ const WHEEL_SIZE = width * 0.62;
 const RADIUS = WHEEL_SIZE / 2;
 
 const SEGMENTS = [
-  { color: '#2E7D32', label: 'Ganador' },
-  { color: '#F57C00', label: 'Reto' },
-  { color: '#C62828', label: 'Sigue intentando' },
-  { color: '#2E7D32', label: 'Ganador' },
-  { color: '#F57C00', label: 'Reto' },
-  { color: '#C62828', label: 'Sigue intentando' },
+  { color: '#0f065a', label: 'Sigue\nintentando' },
+  { color: '#FFD700', label: 'Llavero' },
+  { color: '#1E90FF', label: 'Vaso' },
+  { color: '#0f065a', label: 'Sigue\nintentando' },
+  { color: '#FFD700', label: 'Cartuchero' },
+  { color: '#1E90FF', label: 'Bolsa' },
 ];
 
 const SEGMENT_ANGLE = 360 / SEGMENTS.length;
@@ -163,10 +163,6 @@ export function WheelOfFortune() {
           </Animated.View>
         </GestureDetector>
       </View>
-
-      <Text style={styles.instruction}>
-        Toca "Girar" o desliza la ruleta para jugar
-      </Text>
     </View>
   );
 }

@@ -5,6 +5,9 @@ import { supabase } from '@/lib/supabase';
 import { AndroidApp } from '@/types/app';
 import AppCarousel from '../detail/appCarousel';
 import { WheelOfFortune } from '@/components/WheelFortune';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const APPS_CACHE_KEY = '@apps_cache';
 
 export default function HomeScreen() {
   const [apps, setApps] = useState<AndroidApp[]>([]);
@@ -18,6 +21,14 @@ export default function HomeScreen() {
 
   const loadApps = async () => {
     try {
+      // Try to get cached apps first
+      const cachedApps = await AsyncStorage.getItem(APPS_CACHE_KEY);
+      if (cachedApps) {
+        setApps(JSON.parse(cachedApps));
+        setLoading(false);
+      }
+
+      // Fetch fresh data in the background
       const { data, error } = await supabase
         .from('android_apps')
         .select('*')
@@ -26,14 +37,20 @@ export default function HomeScreen() {
 
       if (error) throw error;
 
-      setApps(data || []);
+      // Update state and cache with fresh data
+      const freshApps = data || [];
+      setApps(freshApps);
+      await AsyncStorage.setItem(APPS_CACHE_KEY, JSON.stringify(freshApps));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al cargar las apps');
+      // Only set error if we don't have cached data
+      const cachedApps = await AsyncStorage.getItem(APPS_CACHE_KEY);
+      if (!cachedApps) {
+        setError(err instanceof Error ? err.message : 'Error al cargar las apps');
+      }
     } finally {
       setLoading(false);
     }
   };
-
   if (loading) {
     return (
       <View style={styles.container}>
