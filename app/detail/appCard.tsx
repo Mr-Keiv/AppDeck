@@ -32,6 +32,9 @@ interface AppCardProps {
 }
 
 export default function AppCard({ app, index, scrollX }: AppCardProps) {
+
+  console.log(CARD_WIDTH)
+
   const handleOpenApp = async () => {
     if (Platform.OS !== 'android') {
       Alert.alert(
