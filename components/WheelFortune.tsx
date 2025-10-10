@@ -15,12 +15,11 @@ const WHEEL_SIZE = width * 0.62;
 const RADIUS = WHEEL_SIZE / 2;
 
 const SEGMENTS = [
-  { color: '#0f065a', label: 'Sigue\nintentando' },
-  { color: '#FFD700', label: 'Llavero' },
-  { color: '#1E90FF', label: 'Vaso' },
-  { color: '#0f065a', label: 'Sigue\nintentando' },
-  { color: '#FFD700', label: 'Cartuchero' },
-  { color: '#1E90FF', label: 'Bolsa' },
+  { color: '#0f065a', label: 'Sigue intentando' },
+  { color: '#022de4', label: 'Llavero' },
+  { color: '#022de4', label: 'Vaso' },
+  { color: '#022de4', label: 'Cartuchero' },
+  { color: '#022de4', label: 'Bolsa' },
 ];
 
 const SEGMENT_ANGLE = 360 / SEGMENTS.length;
@@ -48,7 +47,7 @@ function WheelSegment({ segment, index }: { segment: typeof SEGMENTS[0]; index: 
 
   return (
     <G>
-      <Path d={pathData} fill={segment.color} stroke="#000000" strokeWidth="4" />
+      <Path d={pathData} fill={segment.color} stroke="#fff" strokeWidth="4" />
       {segment.label && lines.map((line, i) => {
         const lineOffset = (i - (lines.length - 1) / 2) * 14;
         return (
@@ -56,7 +55,7 @@ function WheelSegment({ segment, index }: { segment: typeof SEGMENTS[0]; index: 
             key={i}
             x={textX}
             y={textY + lineOffset}
-            fill="#FFFFFF"
+            fill="#ffff"
             fontSize="24"
             fontWeight="bold"
             textAnchor="middle"
@@ -215,9 +214,9 @@ const styles = StyleSheet.create({
     borderTopWidth: 24,
     borderLeftColor: 'transparent',
     borderRightColor: 'transparent',
-    borderTopColor: '#000',
+    borderTopColor: '#ffa600',
     zIndex: 10,
-    shadowColor: '#000',
+    shadowColor: '#ffa600',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
@@ -257,7 +256,7 @@ const styles = StyleSheet.create({
     width: 64,
     height: 64,
     borderRadius: 32,
-    backgroundColor: '#000000',
+    backgroundColor: '#0f065a',
     alignItems: 'center',
     justifyContent: 'center',
   },

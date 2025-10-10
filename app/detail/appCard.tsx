@@ -22,8 +22,17 @@ import { AndroidApp } from '@/types/app';
 const { AppLauncher } = NativeModules;
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-const CARD_WIDTH = SCREEN_WIDTH * 0.4;
+const CARD_WIDTH = SCREEN_WIDTH * 0.35;
 const CARD_SPACING = 20;
+
+// Importar todas las imágenes estáticamente
+const appImages: { [key: string]: any } = {
+  crx: require('../../assets/images/apps/crixto.png'),
+  xitypay: require('../../assets/images/apps/xitypay.png'),
+  //instagram: require('../../assets/images/apps/instagram.png'),
+  default: require('../../assets/images/apps/default.png'),
+  // Agrega aquí todas tus apps
+};
 
 interface AppCardProps {
   app: AndroidApp;
@@ -32,8 +41,6 @@ interface AppCardProps {
 }
 
 export default function AppCard({ app, index, scrollX }: AppCardProps) {
-
-  console.log(CARD_WIDTH)
 
   const handleOpenApp = async () => {
     if (Platform.OS !== 'android') {
@@ -64,6 +71,14 @@ export default function AppCard({ app, index, scrollX }: AppCardProps) {
         { text: 'OK', style: 'cancel' },
       ]);
     }
+  };
+
+  // Función para obtener la imagen correcta
+  const getAppImage = () => {
+    if (!app.icono_local) return appImages.default;
+    
+    const imageKey = app.icono_local.toLowerCase();
+    return appImages[imageKey] ?? appImages.default;
   };
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -97,7 +112,7 @@ export default function AppCard({ app, index, scrollX }: AppCardProps) {
     const opacity = interpolate(
       scrollX.value,
       inputRange,
-      [0.4, 1, 0.4],
+      [0.9, 1, 0.9],
       Extrapolate.CLAMP
     );
 
@@ -114,53 +129,46 @@ export default function AppCard({ app, index, scrollX }: AppCardProps) {
 
   return (
     <Animated.View style={[styles.cardContainer, animatedStyle]}>
-      <LinearGradient
-        colors={['#ffffff', '#ffffff', '#ffffff']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.card}>
-        <View style={styles.cardGlow} />
+      <View style={styles.card}>
+        {/* Fondo de la card - Imagen que ocupa todo el espacio */}
+        <View style={styles.backgroundContainer}>
+          <Image
+            source={require('../../assets/images/fondo.png')}
+            style={styles.cardBackground}
+          />
+        </View>
 
-        <View style={styles.iconWrapper}>
-          <View style={styles.iconGlow} />
+        {/* Contenido de la card */}
+        <View style={styles.content}>
           <View style={styles.iconBorder}>
-            <Image source={{ uri: app.icono_url }} style={styles.appIcon} />
+            <Image
+              source={getAppImage()}
+              style={styles.appIcon}
+              defaultSource={require('../../assets/images/apps/default.png')} // Opcional: imagen por defecto
+            />
           </View>
-        </View>
 
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>{app.titulo}</Text>
-          <View style={styles.titleUnderline} />
-        </View>
-
-        <Text style={styles.description} numberOfLines={3}>
-          {app.descripcion_corta}
-        </Text>
-
-        <View style={styles.statsContainer}>
-          <View style={styles.statItem}>
-            <View style={styles.statDot} />
-            <Text style={styles.statText}>Activa</Text>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>{app.titulo}</Text>
           </View>
-          <View style={styles.statDivider} />
-          <View style={styles.statItem}>
-            <View style={[styles.statDot, { backgroundColor: '#10b981' }]} />
-            <Text style={styles.statText}>Lista</Text>
-          </View>
-        </View>
 
-        <Pressable onPress={handleOpenApp} style={styles.openButton}>
-          <LinearGradient
-            colors={['#0f065a', '#0f065a', '#0f065a']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.openButtonGradient}>
-            <View style={styles.buttonShine} />
-            <Text style={styles.openButtonText}>Abrir aplicación</Text>
-            <ExternalLink size={20} color="#fff" strokeWidth={2.5} />
-          </LinearGradient>
-        </Pressable>
-      </LinearGradient>
+          <Text style={styles.description} numberOfLines={3}>
+            {app.descripcion_corta}
+          </Text>
+
+          <View style={styles.statsContainer}>
+            {/* Espacio reservado */}
+          </View>
+
+          <Pressable onPress={handleOpenApp} style={styles.openButton}>
+            <Image
+              source={require('../../assets/images/button.png')}
+              style={styles.buttonImage}
+              resizeMode="contain"
+            />
+          </Pressable>
+        </View>
+      </View>
     </Animated.View>
   );
 }
@@ -172,7 +180,7 @@ const styles = StyleSheet.create({
   },
   card: {
     borderRadius: 32,
-    padding: 32,
+    padding: 0,
     alignItems: 'center',
     shadowColor: '#0f065a',
     shadowOffset: { width: 0, height: 20 },
@@ -181,40 +189,34 @@ const styles = StyleSheet.create({
     elevation: 20,
     minHeight: 550,
     borderWidth: 1,
-    borderColor: 'rgba(15, 6, 90, 0.3)',
     overflow: 'hidden',
-  },
-  cardGlow: {
-    position: 'absolute',
-    top: -100,
-    left: -100,
-    right: -100,
-    height: 200,
-    backgroundColor: '#0f065a',
-    opacity: 0.15,
-    borderRadius: 200,
-  },
-  iconWrapper: {
-    marginTop: 40,
-    marginBottom: 32,
     position: 'relative',
   },
-  iconGlow: {
+  // Contenedor para el fondo
+  backgroundContainer: {
     position: 'absolute',
-    top: -25,
-    left: -25,
-    right: -25,
-    bottom: -25,
-    backgroundColor: '#0f065a',
-    opacity: 0.25,
-    borderRadius: 85,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 0,
+  },
+  cardBackground: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+  // Contenedor para el contenido
+  content: {
+    width: '100%',
+    padding: 32,
+    alignItems: 'center',
+    zIndex: 1,
+    flex: 1,
+    justifyContent: 'space-between',
   },
   iconBorder: {
-    padding: 8,
-    borderRadius: 38,
-    borderWidth: 3,
-    borderColor: 'rgba(15, 6, 90, 0.5)',
-    backgroundColor: 'rgba(30, 30, 46, 0.8)',
+    // Estilos para el borde del icono si los necesitas
   },
   appIcon: {
     width: 120,
@@ -223,27 +225,24 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     alignItems: 'center',
-    marginBottom: 16,
+    marginTop: 86,
   },
   title: {
-    fontSize: 28,
+    fontSize: 32,
     fontWeight: '800',
-    color: '#000',
+    color: '#fff',
     textAlign: 'center',
     marginBottom: 8,
     textShadowColor: 'rgba(15, 6, 90, 0.5)',
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 8,
-  },
-  titleUnderline: {
-    width: 60,
-    height: 3,
-    backgroundColor: '#0f065a',
-    borderRadius: 2,
+    textDecorationLine: 'underline',
+    textDecorationStyle: 'solid',
+    textDecorationColor: '#fff',
   },
   description: {
-    fontSize: 15,
-    color: 'rgba(0, 0, 0, 0.7)',
+    fontSize: 18,
+    color: '#fff',
     textAlign: 'center',
     lineHeight: 22,
     marginBottom: 32,
@@ -256,62 +255,18 @@ const styles = StyleSheet.create({
     marginBottom: 32,
     paddingVertical: 12,
     paddingHorizontal: 24,
-    backgroundColor: 'rgba(15, 6, 90, 0.15)',
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: 'rgba(15, 6, 90, 0.3)',
-  },
-  statItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  statDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: '#0f065a',
-  },
-  statText: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: 'rgba(0, 0, 0, 0.85)',
-  },
-  statDivider: {
-    width: 1,
-    height: 20,
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
-    marginHorizontal: 16,
   },
   openButton: {
-    width: '100%',
+    width: '80%',
     height: 56,
     borderRadius: 16,
     overflow: 'hidden',
     marginTop: 'auto',
+    marginLeft: 90
   },
-  openButtonGradient: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 10,
-    position: 'relative',
-  },
-  buttonShine: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: '50%',
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
-  },
-  openButtonText: {
-    fontSize: 17,
-    fontWeight: '800',
-    color: '#fff',
-    letterSpacing: 0.5,
+  buttonImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 16,
   },
 });

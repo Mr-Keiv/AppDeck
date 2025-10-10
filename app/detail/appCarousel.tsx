@@ -8,7 +8,7 @@ import { AndroidApp } from '@/types/app';
 import AppCard from './appCard';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
-const CARD_WIDTH = SCREEN_WIDTH * 0.4;
+const CARD_WIDTH = SCREEN_WIDTH * 0.35;
 const CARD_SPACING = 20;
 const AUTO_SCROLL_INTERVAL = 4000;
 
@@ -25,10 +25,12 @@ export default function AppCarousel({ apps }: AppCarouselProps) {
   const autoScrollTimer = useRef<ReturnType<typeof setInterval> | null>(null);
   const [isUserScrolling, setIsUserScrolling] = useState(false);
 
+  // Triplicamos los datos para crear un carrusel infinito
   const extendedApps = apps.length > 0 ? [...apps, ...apps, ...apps] : [];
 
   useEffect(() => {
     if (apps.length > 0 && flatListRef.current) {
+      // Nos posicionamos en la primera copia real (índice = apps.length)
       setTimeout(() => {
         flatListRef.current?.scrollToIndex({
           index: apps.length,
@@ -83,6 +85,8 @@ export default function AppCarousel({ apps }: AppCarouselProps) {
     const contentOffsetX = event.nativeEvent.contentOffset.x;
     const index = Math.round(contentOffsetX / (CARD_WIDTH + CARD_SPACING));
 
+    // Lógica de “loop” infinito: si nos pasamos de la última copia,
+    // saltamos silenciosamente al mismo índice en la copia central.
     if (index < apps.length) {
       flatListRef.current?.scrollToIndex({
         index: index + apps.length,
@@ -99,12 +103,16 @@ export default function AppCarousel({ apps }: AppCarouselProps) {
       currentIndex.current = index;
     }
 
+    // Retardo para evitar que el auto-scroll reaccione demasiado rápido
     setTimeout(() => {
       setIsUserScrolling(false);
     }, 500);
   };
 
   const renderItem = ({ item, index }: { item: AndroidApp; index: number }) => (
+    // AppCard recibe scrollX para calcular su posición relativa
+    // y decidir si está “enfocada” o no (opacidad, escala, etc.).
+    // La lógica de “no enfocada” (más opaca/pequeña) vive dentro de AppCard.
     <AppCard app={item} index={index} scrollX={scrollX} />
   );
 

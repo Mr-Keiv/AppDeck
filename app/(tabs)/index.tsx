@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, StatusBar, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, StatusBar, Dimensions, ImageBackground } from 'react-native';
 import { Video, ResizeMode } from 'expo-av';
 import { supabase } from '@/lib/supabase';
 import { AndroidApp } from '@/types/app';
@@ -121,17 +121,34 @@ export default function HomeScreen() {
         isLooping
         isMuted
       />
+      <ImageBackground
+        source={require('../../assets/images/banner.png')}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: "100%",
+          zIndex: 0,
+          marginTop: -50
 
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Catálogo Disglobal</Text>
-        <View style={styles.headerUnderline} />
-        <Text style={styles.headerSubtitle}>
-          Desliza para explorar nuestras aplicaciones
-        </Text>
+        }}
+        resizeMode="contain"
+      />
+
+
+      {/* Carrusel centrado */}
+      <View style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 20,
+        marginTop: 450,
+        marginBottom: -600,
+      }}>
+        <AppCarousel apps={apps} />
       </View>
-
-      <AppCarousel apps={apps} />
-
+      {/* Ruleta abajo */}
       <View style={styles.wheelSection}>
         <WheelOfFortune />
       </View>
@@ -201,7 +218,7 @@ const styles = StyleSheet.create({
   wheelSection: {
     flex: 1,
     alignItems: 'center',
-    paddingTop: 10,
+    paddingTop: 0,
   },
   wheelTitle: {
     fontSize: 24,

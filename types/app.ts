@@ -9,4 +9,5 @@ export interface AndroidApp {
   activo: boolean;
   created_at: string;
   updated_at: string;
+  icono_local: string;
 }
