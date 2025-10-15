@@ -15,10 +15,15 @@ const WHEEL_SIZE = width * 0.62;
 const RADIUS = WHEEL_SIZE / 2;
 
 const SEGMENTS = [
-  { color: '#0f065a', label: 'Sigue intentando' },
+  { color: '#0f065a', label: 'Reto' },
   { color: '#022de4', label: 'Llavero' },
+  { color: '#0f065a', label: 'Perdiste' },
+
   { color: '#022de4', label: 'Vaso' },
-  { color: '#022de4', label: 'Cartuchero' },
+  { color: '#0f065a', label: 'Reto' },
+  
+  { color: '#022de4', label: 'Cartuchera' },
+  { color: '#0f065a', label: 'Perdiste' },
   { color: '#022de4', label: 'Bolsa' },
 ];
 
@@ -135,7 +140,7 @@ export function WheelOfFortune() {
   return (
     <View style={styles.container}>
 
-     
+
 
       <View style={styles.wheelContainer}>
         <View style={styles.arrow} />

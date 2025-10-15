@@ -15,8 +15,7 @@ import Animated, {
   Extrapolate,
   SharedValue,
 } from 'react-native-reanimated';
-import { LinearGradient } from 'expo-linear-gradient';
-import { ExternalLink } from 'lucide-react-native';
+
 import { AndroidApp } from '@/types/app';
 
 const { AppLauncher } = NativeModules;
@@ -29,7 +28,10 @@ const CARD_SPACING = 20;
 const appImages: { [key: string]: any } = {
   crx: require('../../assets/images/apps/crixto.png'),
   xitypay: require('../../assets/images/apps/xitypay.png'),
-  //instagram: require('../../assets/images/apps/instagram.png'),
+  aero: require('../../assets/images/apps/aero.png'),
+  disco: require('../../assets/images/apps/disconect.png'),
+  auto: require('../../assets/images/apps/auto.png'),
+  corpo: require('../../assets/images/apps/corpo.png'),
   default: require('../../assets/images/apps/default.png'),
   // Agrega aquí todas tus apps
 };
@@ -186,9 +188,9 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 20 },
     shadowOpacity: 0.4,
     shadowRadius: 30,
-    elevation: 20,
+    elevation: 60,
     minHeight: 550,
-    borderWidth: 1,
+    borderWidth: 0,
     overflow: 'hidden',
     position: 'relative',
   },
@@ -219,8 +221,8 @@ const styles = StyleSheet.create({
     // Estilos para el borde del icono si los necesitas
   },
   appIcon: {
-    width: 120,
-    height: 120,
+    width: 125,
+    height: 125,
     borderRadius: 30,
   },
   titleContainer: {
