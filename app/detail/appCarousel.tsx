@@ -8,7 +8,7 @@ import { AndroidApp } from '@/types/app';
 import AppCard from './appCard';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
-const CARD_WIDTH = SCREEN_WIDTH * 0.35;
+const CARD_WIDTH = SCREEN_WIDTH * 0.40;
 const CARD_SPACING = 20;
 const AUTO_SCROLL_INTERVAL = 4000;
 

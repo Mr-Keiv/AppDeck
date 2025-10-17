@@ -246,16 +246,13 @@ export default function HomeScreen() {
             justifyContent: 'center',
             alignItems: 'center',
             paddingVertical: 20,
-            marginTop: 350,
-            marginBottom: -500,
+            marginTop: 500,
+            //marginBottom: -500,
           }}>
             <AppCarousel apps={apps} />
           </View>
 
-          {/* Ruleta abajo */}
-          <View style={styles.wheelSection}>
-            <WheelOfFortune />
-          </View>
+          
         </>
       )}
     </View>

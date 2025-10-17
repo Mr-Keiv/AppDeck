@@ -21,7 +21,7 @@ import { AndroidApp } from '@/types/app';
 const { AppLauncher } = NativeModules;
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-const CARD_WIDTH = SCREEN_WIDTH * 0.35;
+const CARD_WIDTH = SCREEN_WIDTH * 0.40;
 const CARD_SPACING = 20;
 
 // Importar todas las imágenes estáticamente
@@ -188,8 +188,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 20 },
     shadowOpacity: 0.4,
     shadowRadius: 30,
-    elevation: 60,
-    minHeight: 550,
+    elevation: 10,
+    minHeight: 700,
     borderWidth: 0,
     overflow: 'hidden',
     position: 'relative',
@@ -221,13 +221,13 @@ const styles = StyleSheet.create({
     // Estilos para el borde del icono si los necesitas
   },
   appIcon: {
-    width: 125,
-    height: 125,
+    width: 150,
+    height: 150,
     borderRadius: 30,
   },
   titleContainer: {
     alignItems: 'center',
-    marginTop: 86,
+    marginTop: 120,
   },
   title: {
     fontSize: 32,
